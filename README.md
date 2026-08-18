@@ -138,4 +138,4 @@ raiseHand: '[data-tid="raise-hand-button"]', ...'
 
 ## License
 
-[Add your license here]
+MIT License - do whatever you want, hope it helps
