@@ -3,7 +3,7 @@
   "name": "Teams PiP Controls",
   "version": "1.0.0",
   "description": "Floating meeting controls for Microsoft Teams — mic, raise hand, leave.",
-  "permissions": ["activeTab", "scripting", "tabs", "windows"],
+  "permissions": ["activeTab", "tabs", "windows"],
   "host_permissions": [
     "https://teams.microsoft.com/*",
     "https://teams.live.com/*"
@@ -26,8 +26,21 @@
         "https://teams.microsoft.com/*",
         "https://teams.live.com/*"
       ],
-      "js": ["content.js"],
+      "js": [
+        "lib/selectors.js",
+        "lib/meeting-state.js",
+        "lib/stream-detection.js",
+        "lib/pip-ui.js",
+        "lib/pip-window.js",
+        "content.js"
+      ],
       "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["pip-styles.css", "pip-template.html"],
+      "matches": ["https://teams.microsoft.com/*", "https://teams.live.com/*"]
     }
   ],
   "icons": {

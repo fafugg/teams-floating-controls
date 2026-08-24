@@ -1,0 +1,29 @@
+<div id="video-wrap">
+  <video id="pip-video" autoplay muted playsinline></video>
+
+  <div id="view-toggle">
+    <button class="v-pill active" id="btn-cam">Cam</button>
+    <button class="v-pill" id="btn-screen" style="display:none">Screen</button>
+    <button class="v-pill" id="btn-participants" style="display:none">Participants</button>
+  </div>
+
+  <div id="count-badge"></div>
+
+  <div id="participants-list"></div>
+
+  <div id="no-video">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18 10.5V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4.5l4 4v-11l-4 4z"/>
+    </svg>
+    No camera
+  </div>
+</div>
+
+<div id="ctrl-bar">
+  <div class="s-dot" id="s-dot"></div>
+  <span id="s-text">&mdash;</span>
+  <button class="c-btn" id="mute-btn" title="Toggle mute">&#x1f3a4;</button>
+  <button class="c-btn" id="hand-btn" title="Raise / lower hand">&#x270b;</button>
+  <button class="c-btn" id="leave-btn" title="Leave meeting">&#x1f4f5;</button>
+  <span id="speaker-name"></span>
+</div>
