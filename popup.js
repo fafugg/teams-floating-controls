@@ -1,4 +1,4 @@
-// popup.js
+// popup.js — Extension popup UI: finds Teams tab, queries status, opens PiP
 
 function isTeamsUrl(url) {
   return url && (url.includes('teams.microsoft.com') || url.includes('teams.live.com'));
@@ -45,7 +45,7 @@ async function ensureContentScript(tabId) {
           'content.js',
         ],
       });
-      // Wait for injection to complete
+      // Wait for injection to complete — pragmatic delay for content script initialization
       await new Promise((r) => setTimeout(r, 150));
       return true;
     } catch {

@@ -1,5 +1,6 @@
-// content.js — thin orchestrator injected into teams.microsoft.com and teams.live.com
+// content.js — Thin orchestrator injected into teams.microsoft.com and teams.live.com
 // Loads after: selectors.js, meeting-state.js, stream-detection.js, pip-ui.js, pip-window.js
+// Handles message routing and auto-open PiP when a meeting starts (if enabled in settings)
 
 // Auto-open PiP when a meeting starts (if enabled in settings)
 let autoOpenCheck = null;
