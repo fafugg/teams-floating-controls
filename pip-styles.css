@@ -230,3 +230,35 @@ body {
   max-width: 120px;
   display: none;
 }
+
+/* Meeting title */
+#meeting-title {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 7px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none;
+}
+
+/* Duration in control bar */
+#duration {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  min-width: 36px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pin button */
+#pin-btn.pinned {
+  background: #1e3a5f;
+  border-color: #60a5fa;
+}

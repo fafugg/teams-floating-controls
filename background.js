@@ -24,6 +24,32 @@ chrome.runtime.onInstalled.addListener(() => {
   expectingPip = false;
 });
 
+// ── Keyboard shortcut handler ──────────────────────────────────────────────────
+
+function isTeamsUrl(url) {
+  return url && (url.includes('teams.microsoft.com') || url.includes('teams.live.com'));
+}
+
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command === 'toggle-pip') {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab || !isTeamsUrl(tab.url)) return;
+
+    try {
+      const status = await chrome.tabs.sendMessage(tab.id, { action: 'get-status' });
+      if (!status) return;
+
+      if (status.pipOpen) {
+        await chrome.tabs.sendMessage(tab.id, { action: 'close-pip' });
+      } else {
+        await chrome.tabs.sendMessage(tab.id, { action: 'open-pip' });
+      }
+    } catch {
+      // Content script may not be injected yet
+    }
+  }
+});
+
 // ── Message handler ────────────────────────────────────────────────────────────
 
 function handleFocusPip(sendResponse) {

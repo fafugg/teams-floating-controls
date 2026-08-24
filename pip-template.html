@@ -1,6 +1,8 @@
 <div id="video-wrap">
   <video id="pip-video" autoplay muted playsinline></video>
 
+  <div id="meeting-title"></div>
+
   <div id="view-toggle">
     <button class="v-pill active" id="btn-cam">Cam</button>
     <button class="v-pill" id="btn-screen" style="display:none">Screen</button>
@@ -22,8 +24,10 @@
 <div id="ctrl-bar">
   <div class="s-dot" id="s-dot"></div>
   <span id="s-text">&mdash;</span>
-  <button class="c-btn" id="mute-btn" title="Toggle mute">&#x1f3a4;</button>
-  <button class="c-btn" id="hand-btn" title="Raise / lower hand">&#x270b;</button>
-  <button class="c-btn" id="leave-btn" title="Leave meeting">&#x1f4f5;</button>
+  <button class="c-btn" id="mute-btn" title="Toggle mute"></button>
+  <button class="c-btn" id="hand-btn" title="Raise / lower hand"></button>
+  <button class="c-btn" id="leave-btn" title="Leave meeting"></button>
+  <button class="c-btn" id="pin-btn" title="Pin on top"></button>
+  <span id="duration">0:00</span>
   <span id="speaker-name"></span>
 </div>
