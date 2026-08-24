@@ -3,7 +3,7 @@
   "name": "Teams PiP Controls",
   "version": "1.0.0",
   "description": "Floating meeting controls for Microsoft Teams — mic, raise hand, leave.",
-  "permissions": ["activeTab", "scripting", "tabs", "windows"],
+  "permissions": ["activeTab", "scripting", "tabs", "windows", "storage"],
   "host_permissions": [
     "https://teams.microsoft.com/*",
     "https://teams.live.com/*"
@@ -39,10 +39,23 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["pip-styles.css", "pip-template.html"],
+      "resources": ["pip-styles.css", "pip-template.html", "icons/mic-on.svg", "icons/mic-off.svg", "icons/hand.svg", "icons/hand-raised.svg", "icons/leave.svg", "icons/pin.svg"],
       "matches": ["https://teams.microsoft.com/*", "https://teams.live.com/*"]
     }
   ],
+  "commands": {
+    "toggle-pip": {
+      "suggested_key": {
+        "default": "Alt+P",
+        "mac": "Alt+P"
+      },
+      "description": "Toggle Picture-in-Picture window"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
