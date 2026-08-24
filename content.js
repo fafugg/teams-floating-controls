@@ -10,21 +10,28 @@ function startAutoOpenCheck() {
   wasInMeeting = false;
 
   autoOpenCheck = setInterval(async () => {
-    // Skip if PiP is already open
-    if (pipWin && !pipWin.closed) return;
+    try {
+      // Skip if PiP is already open
+      if (pipWin && !pipWin.closed) return;
 
-    const settings = await chrome.storage.sync.get({ autoOpen: false });
-    if (!settings.autoOpen) {
-      wasInMeeting = false;
-      return;
-    }
+      const settings = await chrome.storage.sync.get({ autoOpen: false });
+      if (!settings.autoOpen) {
+        wasInMeeting = false;
+        return;
+      }
 
-    const inMeeting = isInMeeting();
-    if (inMeeting && !wasInMeeting) {
-      // Meeting just started — open PiP
-      openPiP();
+      const inMeeting = isInMeeting();
+      if (inMeeting && !wasInMeeting) {
+        // Meeting just started — open PiP
+        openPiP();
+      }
+      wasInMeeting = inMeeting;
+    } catch (err) {
+      // Extension context invalidated (e.g. extension reloaded) — stop polling
+      if (err.message?.includes('Extension context invalidated')) {
+        stopAutoOpenCheck();
+      }
     }
-    wasInMeeting = inMeeting;
   }, 3000);
 }
 
