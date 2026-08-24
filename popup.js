@@ -1,17 +1,14 @@
 // popup.js
 
 function isTeamsUrl(url) {
-  return url && (
-    url.includes('teams.microsoft.com') ||
-    url.includes('teams.live.com')
-  );
+  return url && (url.includes('teams.microsoft.com') || url.includes('teams.live.com'));
 }
 
 async function findTeamsTab() {
   const [active] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (isTeamsUrl(active?.url)) return { tab: active, isActive: true };
   const all = await chrome.tabs.query({});
-  const found = all.find(t => isTeamsUrl(t.url));
+  const found = all.find((t) => isTeamsUrl(t.url));
   return found ? { tab: found, isActive: false } : null;
 }
 
@@ -24,19 +21,44 @@ async function switchToTeamsTab(tab) {
   await chrome.windows.update(tab.windowId, { focused: true });
 }
 
-// Ask the background to raise the PiP OS window via chrome.windows.update().
-// This is the only reliable path — it goes through Chrome's internal window
-// manager and works even when JS window.focus() is blocked.
 async function focusPipWindow() {
   const resp = await chrome.runtime.sendMessage({ action: 'focus-pip-window' });
   return resp?.ok ?? false;
 }
 
+// Ensure the content script is injected — auto-inject if missing
+async function ensureContentScript(tabId) {
+  try {
+    await chrome.tabs.sendMessage(tabId, { action: 'ping' });
+    return true;
+  } catch {
+    // Content script not injected — inject on demand
+    try {
+      await chrome.scripting.executeScript({
+        target: { tabId },
+        files: [
+          'lib/selectors.js',
+          'lib/meeting-state.js',
+          'lib/stream-detection.js',
+          'lib/pip-ui.js',
+          'lib/pip-window.js',
+          'content.js',
+        ],
+      });
+      // Wait for injection to complete
+      await new Promise((r) => setTimeout(r, 150));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+}
+
 async function init() {
-  const dot        = document.getElementById('dot');
+  const dot = document.getElementById('dot');
   const statusText = document.getElementById('status-text');
-  const btn        = document.getElementById('pip-btn');
-  const errorMsg   = document.getElementById('error-msg');
+  const btn = document.getElementById('pip-btn');
+  const errorMsg = document.getElementById('error-msg');
 
   const found = await findTeamsTab();
 
@@ -47,6 +69,15 @@ async function init() {
   }
 
   const { tab: teamsTab, isActive: onTeamsTab } = found;
+
+  // Ensure content script is injected
+  const injected = await ensureContentScript(teamsTab.id);
+  if (!injected) {
+    statusText.textContent = 'Could not inject extension script — try reloading';
+    dot.className = 'dot off';
+    return;
+  }
+
   const status = await sendToContent(teamsTab.id, { action: 'get-status' });
 
   if (!status) {
@@ -66,10 +97,8 @@ async function init() {
 
   if (status.pipOpen) {
     if (onTeamsTab) {
-      // Already on Teams tab → raise the PiP window to the front
       await focusPipWindow();
     } else {
-      // On another tab → switch to Teams tab (PiP is already above it)
       await switchToTeamsTab(teamsTab);
     }
     window.close();

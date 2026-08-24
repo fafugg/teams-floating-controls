@@ -8,7 +8,12 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       return true;
 
     case 'open-pip':
-      sendResponse(openPiP());
+      openPiP().then((result) => sendResponse(result));
+      return true; // keep channel open for async response
+
+    case 'close-pip':
+      if (pipWin && !pipWin.closed) pipWin.close();
+      sendResponse({ ok: true });
       return true;
 
     case 'get-status':
