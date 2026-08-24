@@ -3,7 +3,7 @@
   "name": "Teams PiP Controls",
   "version": "1.0.0",
   "description": "Floating meeting controls for Microsoft Teams — mic, raise hand, leave.",
-  "permissions": ["activeTab", "tabs", "windows"],
+  "permissions": ["activeTab", "scripting", "tabs", "windows"],
   "host_permissions": [
     "https://teams.microsoft.com/*",
     "https://teams.live.com/*"
